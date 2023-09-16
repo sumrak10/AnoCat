@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  app:
-    build: ./app
+  backend_server:
+    build: ./backend_server
     ports:
       - 8000:8000
     depends_on:
@@ -10,7 +10,17 @@ services:
     env_file:
       - .env
     volumes:
-      - ./app/alembic/versions:/app/alembic/versions/
+      - ./backend_server/alembic/versions:/app/alembic/versions/
+  file_server:
+    build: ./file_server
+    ports:
+      - 8001:8001
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./file_server/files/:/app/files/
   db:
     image: postgres:15
     command: postgres -c listen_addresses='*'

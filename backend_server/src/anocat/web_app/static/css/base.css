@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    background-color: var(--tg-theme-bg-color);
+}
+h1 {
+    color: var(--tg-theme-text-color);
+}
+p {
+    color: var(--tg-theme-button-color);
+}

@@ -1,0 +1,20 @@
+{% extends "base_telegram.html" %}
+{% import "macros/mails.html" as mails_macros %}
+
+{% block css_link %}
+{% endblock %}
+
+{% block content %}
+    <p>
+        {{ test }}
+    </p>
+    {% for mail in mails %}
+        {{ mails_macros.anonymous(mail.name, mail.text) }}
+        <div>
+            {{ mail }}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block js_link %}
+{% endblock %}
