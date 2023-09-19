@@ -1,10 +1,22 @@
 FROM python:3.11
 
+ENV PYTHONFAULTHANDLER=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONHASHSEED=random \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.0.0
+
+
+RUN pip install "poetry==$POETRY_VERSION"
+
 WORKDIR /app
 
-COPY ./requirements.txt /app/requirements.txt
+COPY poetry.lock pyproject.toml /app/
 
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+RUN poetry config virtualenvs.create false \
+    && poetry install $(test "$PROD" == 1 && echo "--no-dev") --no-interaction --no-ansi -vvv
 
 COPY . /app
 

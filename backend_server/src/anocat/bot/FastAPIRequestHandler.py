@@ -1,6 +1,3 @@
-####################################################################################################
-
-import logging
 import secrets
 from typing import Any, Dict, Optional
 
@@ -12,7 +9,6 @@ from aiogram.methods import TelegramMethod
 from aiogram.methods.base import TelegramType
 from aiogram import Bot, Dispatcher
 from aiogram.webhook.aiohttp_server import BaseRequestHandler
-
 from aiohttp import MultipartWriter
 from aiogram.types import InputFile
 
@@ -64,13 +60,13 @@ class FastAPIRequestHandler(BaseRequestHandler):
         return self.router
 
     async def on_startup(self):
-        logging.warn("Bot startup event")
+        # logger.info("Bot startup event")
         await self.bot.set_webhook(self.WEBHOOK_URL)
 
     async def _handle_close(self):
-        self.close()
+        await self.close()
     async def close(self):
-        logging.info('Bot shutdown event')
+        # logger.info('Bot shutdown event')
         # await dp.storage.close()
         # await dp.storage.wait_closed()
         await self.bot.session.close()

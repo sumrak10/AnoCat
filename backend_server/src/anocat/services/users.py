@@ -1,4 +1,4 @@
-from ..schemas.users import UserSchema, UserSchemaEdit
+from ..schemas.users import UserSchema, UserSchemaEdit, UserSchemaAdd
 from ..schemas.topics import TopicSchemaAdd
 from ..utils.unitofwork import IUnitOfWork, UnitOfWork
 
@@ -11,11 +11,9 @@ class UsersService:
         first_topic_text: str = "Задавайте любые вопросы :)", 
         uow: IUnitOfWork = UnitOfWork()
     ):
-        user = UserSchema(
+        user = UserSchemaAdd(
             id=id,
-            emoji_status="🐈",
-            name=name,
-            anopoints=0
+            name=name
         )
         topic = TopicSchemaAdd(
             author_id=user.id, 
@@ -26,7 +24,7 @@ class UsersService:
         async with uow:
             await uow.users.add_one(user.model_dump())
             await uow.topics.add_one(topic.model_dump())
-            # await uow.commit()
+            await uow.commit()
 
     @classmethod
     async def get(cls, user_id:int, uow: IUnitOfWork = UnitOfWork()) -> UserSchema:

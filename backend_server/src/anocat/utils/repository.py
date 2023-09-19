@@ -23,6 +23,11 @@ class SQLAlchemyRepository(AbstractRepository):
         res = await self.session.execute(stmt)
         return res.scalar_one()
     
+    async def edit_by_filter(self, filters: dict, data: dict) -> int:
+        stmt = update(self.model).values(**data).filter_by(**filters).returning(self.model.id)
+        res = await self.session.execute(stmt)
+        return res.scalar_one()
+    
     async def get_all(self) -> list:
         stmt = select(self.model)
         res = await self.session.execute(stmt)

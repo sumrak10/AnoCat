@@ -1,7 +1,6 @@
 import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import ForeignKey
 
 from src.database.database_metadata import Base
 

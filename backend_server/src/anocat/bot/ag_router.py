@@ -27,8 +27,12 @@ async def start(msg: types.Message, bot: Bot, command: CommandObject) -> None:
             а тут всякие инструкции для новых юзеров и тд и тп !"
         )
     if command.args:
-        msg.reply(command.args)
-    await main_menu_message_handler(msg, bot)
+        prefix, argument = command.args.split('__')
+        match prefix:
+            case 'topics':
+                await ...
+    else:
+        await main_menu_message_handler(msg, bot)
 
 
 

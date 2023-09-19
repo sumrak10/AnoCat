@@ -9,7 +9,7 @@ from . import callback_data
 
 def web_app_btn(link: str = '/'):
     return InlineKeyboardButton(
-        text='Открыть в окне', 
+        text='🐱 Anocat', 
         web_app=WebAppInfo(url=f"{app_settings.HOST}/bot/web_app{link}")
     )
 settings_btn = InlineKeyboardButton(
@@ -17,6 +17,6 @@ settings_btn = InlineKeyboardButton(
     callback_data=callback_data.settings.pack()
 )
 main_menu_btn = InlineKeyboardButton(
-    text="Главное меню", 
+    text="↩️ Главное меню", 
     callback_data=callback_data.main_menu.pack()
 )

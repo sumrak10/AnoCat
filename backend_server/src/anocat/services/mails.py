@@ -39,6 +39,20 @@ class MailsService:
                 for mail in await uow.mails.get_all_with_filters_join_user(
                     topic_id=topic_id
                 ):
+                    await cls.mark_as_read(mail_id=mail.id, uow=uow)
                     mails.append(mail)
             await uow.commit()
         return mails
+    
+    @classmethod
+    async def mark_as_read(cls, 
+        mail_id: int, 
+        uow: IUnitOfWork = UnitOfWork()
+    ) -> None:
+        async with uow:
+            await uow.mails.edit_one(
+                id=mail_id,
+                data={
+                    uow.mails.model.c.read: True
+                }
+            )

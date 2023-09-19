@@ -56,7 +56,7 @@ async def get_text(user_id: int):
     topic_of_day:TopicOfDaySchema = await TopicOfDayService.get_today_topic_of_day()
 
     return f"<b>Главное меню:</b>\n\
-{user.emoji_status} Пользователь: <a href='t.me/https://t.me/anocatbot?start=user__{user.id}'>{user.name}</a>\n\
+{user.emoji_status} Пользователь: <a href='t.me/https://t.me/anocatbot?start=topics__{user.id}'>{user.name}</a>\n\
 📊 Рейтинг: #12345 ({user.anopoints} AP)\n\
 ✨ Топик дня: {topic_of_day.text}\n\
 <a href='t.me/https://t.me/anocatbot?start=use_topic_of_day_template__{topic_of_day.id}'>\
@@ -69,13 +69,17 @@ async def keyboard(user_id):
             [
                 InlineKeyboardButton(
                     text="💌 Все письма", 
-                    web_app=WebAppInfo(
-                        url=f"{web_app_settings.WEB_APP_URL}{web_app_settings.MAILS_FOR_ME_URL}?user_id={user_id}"
-                    )
+                    callback_data=callback_data.mails_for_me.pack()
                 ),
                 InlineKeyboardButton(
                     text="✉️ Мои письма", 
                     callback_data=callback_data.mails_by_me.pack()
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="☁️ Мои топики", 
+                    callback_data=callback_data.my_topics.pack()
                 )
             ],
             [

@@ -4,6 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from .config import settings
 from .anocat.bot.router import router as bot_router
 from .anocat.web_app.router import router as web_app_router
+from .anocat.api.router import router as api_router
+
 
 
 app = FastAPI()
@@ -15,6 +17,6 @@ app.mount(
     name="static"
 )
 
-
+app.include_router(api_router)
 app.include_router(bot_router)
 app.include_router(web_app_router)

@@ -9,7 +9,7 @@ from .dispatcher import dp
 
 router = APIRouter(
     prefix=settings.APP_PREFIX, 
-    tags=[settings.APP_PREFIX[1:]]
+    tags=[settings.APP_PREFIX[1:]],
 )
 
 
