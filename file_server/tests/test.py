@@ -1,5 +1,6 @@
 import requests
 import time
+from time import perf_counter
 import random
 # from requests_toolbelt.multipart.encoder import MultipartEncoder
 

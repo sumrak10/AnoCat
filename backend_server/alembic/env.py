@@ -7,15 +7,15 @@ from sqlalchemy import pool
 from alembic import context
 
 from src.database.db_config import db_settings
-from src.database.database_metadata import Base
+from backend_server.src.database.metadata import Base
 
-from src.database.all_models import *
+from src.models import *
 
 
 config = context.config
 
 section = config.config_ini_section
-config.set_section_option(section, "DB", "postgresql+asyncpg")
+config.set_section_option(section, "DB_N_DRIVER", db_settings.DB_AND_DRIVER)
 config.set_section_option(section, "DB_HOST", db_settings.HOST)
 config.set_section_option(section, "DB_PORT", db_settings.PORT)
 config.set_section_option(section, "DB_NAME", db_settings.NAME)

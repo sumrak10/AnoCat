@@ -1,38 +1,27 @@
-import logging
-import time
-
 from fastapi import FastAPI
-from fastapi.requests import Request
-from fastapi import BackgroundTasks
-from fastapi import UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import JSONResponse, FileResponse
 
-from .services import files_service
-from .config import settings
+from .rndpath.router import router as rndpath_router
+from .rndpath.services import RndPathService
+
+from .middlewares import ProcessTimeHeaderMiddleware
+
 
 app = FastAPI()
 
+app.include_router(rndpath_router)
 
-
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    response.headers["X-Process-Time"] = str(round(float(process_time),10))
-    return response
-
-@app.post("/")
-async def save_file(file: UploadFile, background_tasks: BackgroundTasks):
-    logging.warn(file.size)
-    link = await files_service.save_file(file,
-        run_in_background=True,
-        background_tasks=background_tasks
-    )
-
-    return {"message": "OK", "link": f"{settings.HOST}:{settings.PORT}/{link}"}
+# app.add_middleware(ProcessTimeHeaderMiddleware)
 
 
 @app.get("/{link}")
-async def file_save(link: str):
-    return FileResponse(path=files_service.from_link_to_path(link),)
+async def get_file(link: str):
+    match link:
+        case s if s.startswith('rnd'):
+            try:
+                return FileResponse(path=RndPathService.from_link_to_path(link[3:]))
+            except FileNotFoundError:
+                pass
+        case s if s.startswith('abs'):
+            pass
+    return JSONResponse(content={"message":"Not found"}, status_code=404)

@@ -1,19 +1,23 @@
+from time import perf_counter
+
 from fastapi import FastAPI
+from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
 
 from .config import settings
-from .anocat.bot.router import router as bot_router
-from .anocat.web_app.router import router as web_app_router
-from .anocat.api.router import router as api_router
+from .interfaces.bot.router import router as bot_router
+from .interfaces.web_app.router import router as web_app_router
+from .interfaces.api.router import router as api_router
 
-
+from .middlewares import ProcessTimeHeaderMiddleware
 
 app = FastAPI()
 
+app.add_middleware(ProcessTimeHeaderMiddleware)
 
 app.mount(
     settings.STATIC_URL, 
-    StaticFiles(directory="src/anocat/web_app/static"), 
+    StaticFiles(directory="src/interfaces/web_app/static"), 
     name="static"
 )
 
